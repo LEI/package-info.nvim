@@ -11,6 +11,12 @@ local M = {
             up_to_date = "#3C4048",
             outdated = "#d19a66",
         },
+        diagnostic = {
+            enable = false,
+            severity = {
+                outdated = vim.diagnostic.severity.WARN,
+            },
+        },
         icons = {
             enable = true,
             style = {

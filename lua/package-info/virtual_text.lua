@@ -30,6 +30,22 @@ M.__display_on_line = function(line_number, dependency_name)
             icon = config.options.icons.style.outdated,
             version = clean_version(outdated_dependency.latest),
         }
+        if config.options.diagnostic and config.options.diagnostic.enable then
+            table.insert(M.diagnostics, {
+                bufnr = state.buffer.id,
+                lnum = line_number - 1,
+                col = 0,
+                severity = config.options.diagnostic.severity.outdated,
+                message = string.format(
+                    "Outdated: %s %s < %s",
+                    dependency_name,
+                    outdated_dependency.current,
+                    outdated_dependency.latest
+                ),
+                source = "package-info",
+                user_data = { version = virtual_text.version },
+            })
+        end
     end
 
     if not config.options.icons.enable then
@@ -66,12 +82,19 @@ end
 -- }
 -- @return nil
 M.display = function()
+    if config.options.diagnostic.enable then
+        M.diagnostics = {}
+    end
     for line_number, line_content in ipairs(state.buffer.lines) do
         local dependency_name = get_dependency_name_from_line(line_content)
 
         if dependency_name then
             M.__display_on_line(line_number, dependency_name)
         end
+    end
+    if config.options.diagnostic.enable then
+        local opts = { virtual_text = false }
+        vim.diagnostic.set(state.namespace.id, state.buffer.id, M.diagnostics, opts)
     end
 
     state.is_virtual_text_displayed = true
