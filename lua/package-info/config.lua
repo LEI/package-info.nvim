@@ -16,6 +16,7 @@ local M = {
             style = {
                 up_to_date = "|  ",
                 outdated = "|  ",
+                unwanted = "|  ",
             },
         },
         autostart = true,

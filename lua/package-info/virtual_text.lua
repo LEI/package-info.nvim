@@ -25,11 +25,19 @@ M.__display_on_line = function(line_number, dependency_name)
     local outdated_dependency = state.dependencies.outdated[dependency_name]
 
     if outdated_dependency and outdated_dependency.latest ~= state.dependencies.installed[dependency_name].current then
-        virtual_text = {
-            group = constants.HIGHLIGHT_GROUPS.outdated,
-            icon = config.options.icons.style.outdated,
-            version = clean_version(outdated_dependency.latest),
-        }
+        if outdated_dependency.wanted and outdated_dependency.wanted == state.dependencies.installed[dependency_name].current then
+            virtual_text = {
+                group = constants.HIGHLIGHT_GROUPS.unwanted,
+                icon = config.options.icons.style.unwanted,
+                version = clean_version(outdated_dependency.latest),
+            }
+        else
+            virtual_text = {
+                group = constants.HIGHLIGHT_GROUPS.outdated,
+                icon = config.options.icons.style.outdated,
+                version = clean_version(outdated_dependency.latest),
+            }
+        end
     end
 
     if not config.options.icons.enable then

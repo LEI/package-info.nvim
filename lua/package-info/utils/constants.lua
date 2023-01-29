@@ -3,6 +3,7 @@ local M = {}
 M.HIGHLIGHT_GROUPS = {
     outdated = "PackageInfoOutdatedVersion",
     up_to_date = "PackageInfoUpToDateVersion",
+    unwanted = "PackageInfoUnwantedVersion",
 }
 
 M.PACKAGE_MANAGERS = {
