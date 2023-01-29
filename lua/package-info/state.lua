@@ -14,6 +14,7 @@ M.dependencies = {
     -- [name]: {
     --     current: string - current dependency version
     --     latest: string - latest dependency version
+    --     wanted: string - wanted dependency version
     -- }
     outdated = {},
     -- Installed dependencies from package.json as a list of

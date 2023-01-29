@@ -11,18 +11,21 @@ local M = {
             up_to_date = "#3C4048",
             outdated = "#d19a66",
         },
-        diagnostic = {
-            enable = false,
-            severity = {
-                outdated = vim.diagnostic.severity.WARN,
-            },
-        },
         icons = {
             enable = true,
             style = {
                 up_to_date = "|  ",
                 outdated = "|  ",
+                unwanted = "|  ",
             },
+        },
+        diagnostic = {
+            enable = false,
+            severity = {
+                outdated = vim.diagnostic.severity.WARN,
+                unwanted = vim.diagnostic.severity.INFO,
+            },
+            source = "package-info",
         },
         autostart = true,
         package_manager = constants.PACKAGE_MANAGERS.npm,

@@ -25,9 +25,12 @@ M.__display_on_line = function(line_number, dependency_name)
     local outdated_dependency = state.dependencies.outdated[dependency_name]
 
     if outdated_dependency and outdated_dependency.latest ~= state.dependencies.installed[dependency_name].current then
+        local status = outdated_dependency.wanted and outdated_dependency.wanted == state.dependencies.installed[dependency_name].current
+            and 'unwanted'
+            or 'outdated'
         virtual_text = {
-            group = constants.HIGHLIGHT_GROUPS.outdated,
-            icon = config.options.icons.style.outdated,
+            group = constants.HIGHLIGHT_GROUPS[status],
+            icon = config.options.icons.style[status],
             version = clean_version(outdated_dependency.latest),
         }
         if config.options.diagnostic and config.options.diagnostic.enable then
@@ -35,14 +38,15 @@ M.__display_on_line = function(line_number, dependency_name)
                 bufnr = state.buffer.id,
                 lnum = line_number - 1,
                 col = 0,
-                severity = config.options.diagnostic.severity.outdated,
+                severity = config.options.diagnostic.severity[status],
                 message = string.format(
-                    "Outdated: %s %s < %s",
+                    "Package %s: %s %s < %s",
+                    status,
                     dependency_name,
                     outdated_dependency.current,
                     outdated_dependency.latest
                 ),
-                source = "package-info",
+                source = config.options.diagnostic.source,
                 user_data = { version = virtual_text.version },
             })
         end
